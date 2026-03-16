@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Image Detector</title>
+
+<style>
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+body{
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+background:#0b0b0f;
+color:white;
+overflow-x:hidden;
+}
+
+/* NAVBAR */
+
+.navbar{
+position:fixed;
+top:0;
+width:100%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 80px;
+background:rgba(0,0,0,0.6);
+backdrop-filter:blur(10px);
+z-index:100;
+}
+
+.logo{
+cursor:pointer;
+}
+
+.nav-links{
+display:flex;
+gap:25px;
+font-size:14px;
+color:#cfd3ff;
+}
+
+.nav-links span{
+cursor:pointer;
+}
+
+.nav-links span:hover{
+color:#7df9ff;
+}
+
+/* SLIDER */
+
+.slider{
+display:flex;
+width:300vw;
+transition:0.6s;
+}
+
+.page{
+width:100vw;
+min-height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+padding:140px 20px;
+text-align:center;
+position:relative;
+}
+
+/* HERO */
+
+.hero-title{
+font-size:60px;
+font-weight:600;
+background:linear-gradient(90deg,#fff,#8ca3ff);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.hero-btn{
+margin-top:40px;
+padding:14px 28px;
+border:none;
+border-radius:30px;
+background:#7df9ff;
+cursor:pointer;
+font-weight:600;
+}
+
+/* HOME BUTTON */
+
+.home-btn{
+position:absolute;
+top:40px;
+left:40px;
+padding:10px 22px;
+border:none;
+border-radius:25px;
+background:#1f2235;
+color:white;
+cursor:pointer;
+}
+
+/* CARD */
+
+.card{
+margin-top:30px;
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(255,255,255,0.1);
+border-radius:16px;
+padding:35px;
+width:420px;
+}
+
+/* UPLOAD */
+
+.drop-area{
+border:2px dashed rgba(255,255,255,0.3);
+padding:35px;
+border-radius:12px;
+cursor:pointer;
+}
+
+.drop-area input{
+display:none;
+}
+
+.upload-icon{
+width:60px;
+}
+
+#preview{
+margin-top:20px;
+max-width:250px;
+border-radius:10px;
+display:none;
+}
+
+button{
+margin-top:20px;
+padding:12px 24px;
+border:none;
+border-radius:8px;
+background:#7df9ff;
+cursor:pointer;
+font-weight:600;
+}
+
+/* RESULT IMAGE */
+
+.result-img{
+max-width:280px;
+border-radius:12px;
+margin-top:20px;
+}
+
+/* INFO SECTIONS */
+
+.info-section{
+display:none;
+padding:120px 40px;
+max-width:900px;
+margin:auto;
+}
+
+.info-section h2{
+margin-bottom:20px;
+font-size:32px;
+}
+
+.info-section p{
+line-height:1.7;
+color:#cfd3ff;
+}
+
+/* FOOTER */
+
+.footer{
+position:fixed;
+bottom:0;
+width:100%;
+text-align:center;
+padding:10px;
+background:rgba(0,0,0,0.6);
+border-top:1px solid rgba(255,255,255,0.1);
+font-size:13px;
+}
+
+.footer span{
+color:#7df9ff;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<div class="navbar">
+
+<h2 class="logo" onclick="goHome()">AI Detector</h2>
+
+<div class="nav-links">
+<span onclick="showSection('features')">Features</span>
+<span onclick="showSection('process')">Process</span>
+<span onclick="showSection('blog')">Blog</span>
+<span onclick="showSection('contact')">Contact</span>
+</div>
+
+</div>
+
+<!--
+                                                                  Slider
+-->
+
+<div class="slider" id="slider">
+
+<!--
+                                                                  Page 1
+-->
+
+<div class="page">
+
+<h1 class="hero-title">
+Reveal the Truth Behind Every Image
+</h1>
+
+<p style="font-size:20px; margin-top:15px; color:#cfd3ff; max-width:700px;">
+Leverage cutting-edge Machine Learning and Deep Learning technology to instantly detect whether an image is AI-generated or real. Fast, accurate, and reliable.
+</p>
+
+<button class="hero-btn" onclick="nextPage()" style="font-size:18px; padding:16px 32px; background:#00fff7; color:#0b0b0f; box-shadow:0px 4px 20px rgba(0,255,247,0.5);">
+Start AI Detection
+</button>
+
+<p style="margin-top:20px; font-style:italic; color:#7df9ff;">
+Empowering digital authenticity in the age of AI
+</p>
+
+
+</div>
+
+<!--
+                                                                    Page 2
+-->
+
+<div class="page">
+
+<button class="home-btn" onclick="goHome()">Home</button>
+
+<div class="card">
+
+<h2>Upload Image</h2>
+
+<form action="/" method="POST" enctype="multipart/form-data">
+
+<label class="drop-area">
+
+<input type="file" name="image" accept="image/*"
+onchange="previewImage(event)" required>
+
+<img src="https://cdn-icons-png.flaticon.com/512/685/685655.png"
+class="upload-icon">
+
+<p>Click to Upload Image</p>
+
+</label>
+
+<img id="preview">
+
+<button type="submit">
+Analyze Image
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+<!--
+                                                                       Page 3
+-->
+
+<div class="page">
+
+<button class="home-btn" onclick="goHome()">Home</button>
+
+<div class="card">
+
+<h2>AI Analysis Result</h2>
+
+{% if result %}
+
+<h3>{{result}}</h3>
+
+<p>Confidence: {{confidence}}%</p>
+
+<img src="{{img_path}}" class="result-img">
+
+{% else %}
+
+<p>No image analyzed</p>
+
+{% endif %}
+
+</div>
+
+</div>
+
+</div>
+
+<!--
+                                                                        Features
+-->
+
+<div id="features" class="info-section">
+
+<h2>Project Features</h2>
+
+<p>
+
+<strong>AI-Powered Image Detection</strong><br>
+Utilizes advanced deep learning techniques to accurately determine whether an image is AI-generated or a real photograph.
+<br><br>
+
+<strong>Instant Image Analysis</strong><br>
+Users can upload any image and receive a prediction result within seconds through a fast and responsive web interface.
+<br><br>
+
+<strong>Confidence Score Prediction</strong><br>
+The system provides a confidence percentage indicating the reliability of the AI model’s prediction.
+<br><br>
+
+<strong>Deep Learning CNN Model</strong><br>
+Powered by a Convolutional Neural Network (CNN) trained to identify subtle visual patterns and artifacts commonly found in AI-generated images.
+<br><br>
+
+<strong>Modern Web Interface</strong><br>
+Designed with a clean and interactive UI that makes the detection process simple, intuitive, and user-friendly.
+<br><br>
+
+<strong>Machine Learning Integration</strong><br>
+Built using Python, TensorFlow, and Flask, demonstrating real-world implementation of AI and deep learning technologies.
+<br><br>
+
+<strong>Real-World Application</strong><br>
+Helps address the growing challenge of detecting AI-generated media and promotes digital authenticity and transparency.
+
+</p>
+
+</div>
+
+<!--
+                                                                                Process
+-->
+
+<div id="process" class="info-section">
+
+<h2>Machine Learning Process</h2>
+
+<p>
+The AI Image Detector follows a structured machine learning pipeline to accurately identify AI-generated images.
+<br><br>
+
+<strong>1. Data Collection</strong><br>
+A diverse dataset containing both real photographs and AI-generated images is gathered to train the model effectively.
+<br><br>
+
+<strong>2. Image Preprocessing</strong><br>
+Images are resized, normalized, and prepared to ensure consistent input for the deep learning model.
+<br><br>
+
+<strong>3. Model Training</strong><br>
+A Convolutional Neural Network (CNN) is trained using TensorFlow to learn complex visual patterns that differentiate real images from AI-generated ones.
+<br><br>
+
+<strong>4. Model Optimization</strong><br>
+The model is validated and fine-tuned to improve prediction accuracy and generalization.
+<br><br>
+
+<strong>5. Model Deployment</strong><br>
+The trained model is saved and integrated into a Flask web application for real-time image analysis.
+<br><br>
+
+<strong>6. Image Upload</strong><br>
+Users upload an image through the web interface for analysis.
+<br><br>
+
+<strong>7. AI Prediction</strong><br>
+The system analyzes the image using the trained model and predicts whether it is AI-generated or real, along with a confidence score.
+<br><br>
+
+This workflow demonstrates the complete lifecycle of a machine learning system — from data preparation and model training to real-time deployment in a user-friendly web application.
+</p>
+
+
+</div>
+
+<!--
+                                                                               Blog
+-->
+
+<div id="blog" class="info-section">
+
+<h2>About This Project</h2>
+
+<p>
+AI Image Detector is an advanced Machine Learning web application designed to identify whether an image is generated by Artificial Intelligence or captured in the real world. As AI-generated media becomes increasingly realistic, the ability to verify digital authenticity has become more important than ever.
+<br><br>
+This project uses a Convolutional Neural Network (CNN) built with TensorFlow to analyze image patterns, textures, and visual features that distinguish AI-generated images from real photographs. The system processes the uploaded image, performs deep learning analysis, and provides a prediction along with a confidence score.
+<br><br>
+Developed using Python, TensorFlow, and Flask, this application demonstrates how modern deep learning techniques can be applied to solve real-world problems related to digital media authenticity, misinformation detection, and AI transparency.
+<br><br>
+The goal of this project is to showcase the practical implementation of machine learning in web applications while providing users with a simple and interactive platform to verify image authenticity instantly.
+</p>
+
+</div>
+
+<!--
+                                                                     Contact
+-->
+
+<div id="contact" class="info-section">
+
+<h2>Contact</h2>
+
+<p>
+
+<strong>Akhil T S</strong><br><br>
+
+Thank you for exploring the AI Image Detector project.
+If you have any questions, suggestions, or collaboration opportunities, feel free to reach out. I am always open to discussing new ideas, technology, and innovative projects in the fields of Artificial Intelligence, Machine Learning, and Web Development.
+<br><br>
+
+Whether you are a recruiter, developer, or tech enthusiast, I would be happy to connect and share insights about this project and future developments.
+<br><br>
+
+<strong>Email:</strong> akhiltssabu@gmail.com
+
+</p>
+
+</div>
+
+<!--
+                                                                         Footer
+-->
+
+<div class="footer">
+Powered by <span style="cursor:pointer; color:#7df9ff;" onclick="showSection('contact')">ɑƙ𝗁ꪱᜒᥣ 𝗍ડ</span>
+</div>
+
+<script>
+
+let currentPage=0;
+
+function nextPage(){
+
+currentPage=1;
+document.getElementById("slider").style.transform="translateX(-100vw)";
+
+}
+
+function goHome(){
+
+currentPage=0;
+document.getElementById("slider").style.transform="translateX(0vw)";
+
+hideSections();
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+}
+
+function previewImage(event){
+
+const reader=new FileReader();
+
+reader.onload=function(){
+
+let img=document.getElementById("preview");
+
+img.src=reader.result;
+img.style.display="block";
+
+}
+
+reader.readAsDataURL(event.target.files[0]);
+
+}
+
+function showSection(id){
+
+hideSections();
+
+document.getElementById(id).style.display="block";
+
+window.scrollTo({
+top:document.body.scrollHeight,
+behavior:"smooth"
+});
+
+}
+
+function hideSections(){
+
+document.getElementById("features").style.display="none";
+document.getElementById("process").style.display="none";
+document.getElementById("blog").style.display="none";
+document.getElementById("contact").style.display="none";
+
+}
+
+window.onload=function(){
+
+let result="{{result}}";
+
+if(result!=""){
+
+currentPage=2;
+
+document.getElementById("slider").style.transform="translateX(-200vw)";
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
