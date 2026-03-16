@@ -22,4 +22,9 @@ An advanced Machine Learning web application designed to identify whether an ima
    Run the application:
 
    python main.py
-   
+
+
+
+   ## Author
+**Akhil T S** * **Email:** akhiltssabu@gmail.com
+* **LinkedIn:** [Connect with me here](https://www.linkedin.com/in/akhil-t-s-7a10581a7)
